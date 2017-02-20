@@ -1,0 +1,23 @@
+﻿<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-5">
+            <div class="list-group" style="border-radius:0px">
+                <a *ngFor="let user of users" class="list-group-item list-group-item-action {{selectedUser == user ? 'list-group-item-info' : ''}}" style="cursor:pointer;"
+                   (click)="onSelectUser(user)">
+                    {{ user.name }}
+                </a>
+            </div>
+        </div>
+        <div class="col-sm-7">
+            <div *ngIf="selectedUser == null" class="alert alert-info">
+                <h4>Select a <strong>User</strong> to see its permissions</h4>
+            </div>
+            <div *ngIf="selectedUser != null">
+                <div class="list-group" style="border-radius:0px">
+                    <permissions-list [permissions]="selectedUser.permissions" [emptyListMessage]="'There are no permissions assigned to the user'"></permissions-list>
+                    <roles-list-accordion [roles]="selectedUser.roles"></roles-list-accordion>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

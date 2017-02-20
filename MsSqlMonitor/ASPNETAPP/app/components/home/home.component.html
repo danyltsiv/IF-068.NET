@@ -1,0 +1,14 @@
+﻿<body id="top">
+    <section id="home">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-offset-5 col-md-7">
+                    <h2><span>{{mainText}}</span>{{text}}</h2>
+                    <a routerLink="/login" class="btn btn-default wow fadeInUp" 
+                       *ngIf="!authService.isLoggedIn()" data-wow-offset="50" 
+                       data-wow-delay="0.6s">GET STARTED</a>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>

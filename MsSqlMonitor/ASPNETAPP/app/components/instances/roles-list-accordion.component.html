@@ -1,0 +1,7 @@
+﻿<ngb-accordion #acc="ngbAccordion" activeIds="ngb-panel-0" *ngIf="roles">
+    <ngb-panel *ngFor="let role of roles" title="{{role.name}}">
+        <template ngbPanelContent>
+            <permissions-list [permissions]="role.permissions" [emptyListMessage]="'There are no permissions assigned to the role'"></permissions-list>
+        </template>
+    </ngb-panel>
+</ngb-accordion>

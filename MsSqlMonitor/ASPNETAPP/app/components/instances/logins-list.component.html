@@ -1,0 +1,23 @@
+﻿<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-5">
+            <div class="list-group" style="border-radius:0px">
+                <a *ngFor="let login of logins" class="list-group-item list-group-item-action {{selectedLogin == login ? 'list-group-item-info' : ''}}" style="cursor:pointer;"
+                   (click)="onSelectLogin(login)">
+                    {{ login.name }}
+                </a>
+            </div>
+        </div>
+        <div class="col-sm-7">
+            <div *ngIf="selectedLogin == null" class="alert alert-info">
+                <h4>Select a <strong>Login</strong> to see its permissions</h4>
+            </div>
+            <div *ngIf="selectedLogin != null">
+                <div class="list-group" style="border-radius:0px">
+                    <permissions-list [permissions]="selectedLogin.permissions"></permissions-list>
+                    <roles-list-accordion [roles]="selectedLogin.roles"></roles-list-accordion>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

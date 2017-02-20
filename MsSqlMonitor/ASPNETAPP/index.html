@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <base href="/">
+    <title>SQL Monitor System</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <!--Custom styles for this template-->
+    <link rel="stylesheet" href="css/bootstrap3.5.min.css" />
+    <!-- Font awesome Stylesheet-->
+    <link href="app/assets/css/font-awesome.css" rel="stylesheet" />
+
+ 
+
+    <!-- Polyfill(s) for older browsers -->
+    <script src="node_modules/core-js/client/shim.min.js"></script>
+    <script src="node_modules/systemjs/dist/system-polyfills.js"></script>
+    <script src="node_modules/zone.js/dist/zone.min.js"></script>
+    <script src="node_modules/reflect-metadata/Reflect.js"></script>
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <!-- 2. Configure SystemJS -->
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('app').catch(function (err) { console.error(err); });
+    </script>
+    <!--Bootstrap 4 stylesheets-->
+    <link type="text/css" href="css/bootstrap.min.css" rel="stylesheet" />
+    <link type="text/css" href="css/bootstrap-flex.min.css" rel="stylesheet" />
+    <link type="text/css" href="css/bootstrap-reboot.min.css" rel="stylesheet" />
+    <link type="text/css" href="css/bootstrap-grid.min.css" rel="stylesheet" />
+
+</head>
+<base href="/">
+<!-- 3. Display the application -->
+<body style="background-color:#edeef0; font-family:-apple-system, BlinkMacSystemFont, sans-serif; padding-top:30px">
+    <my-app></my-app>
+</body>
+</html>

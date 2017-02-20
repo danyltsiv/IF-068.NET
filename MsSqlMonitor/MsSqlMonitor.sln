@@ -1,0 +1,82 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DALLib", "DALLib\DALLib.csproj", "{106527E8-DDFF-4D35-945C-FE24426B27CD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DALLib.Tests", "DALLib.Tests\DALLib.Tests.csproj", "{080ACFFC-58FA-4A84-ABBF-BEE1FFCE452C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonLib", "CommonLib\CommonLib.csproj", "{869B6AC3-499B-4982-8C7A-8AD56A01FF6E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLInfoCollectionService", "SQLInfoHarvesterService\SQLInfoCollectionService.csproj", "{7769D0AB-C1C3-49F1-B0B7-139FB7856B3D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASPNETAPP", "ASPNETAPP\ASPNETAPP.csproj", "{280DC267-318A-4CE3-83D1-D87AF14ECA68}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tfconfig", "tfconfig", "{F0A4BE30-360C-422F-90BB-D9B18BAA4735}"
+	ProjectSection(SolutionItems) = preProject
+		.tfignore = .tfignore
+		.nuget\NuGet.config = .nuget\NuGet.config
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleForTesting", "ConsoleForTesting\ConsoleForTesting.csproj", "{FF19B52A-9DD8-41AF-AA3C-9D59A7092941}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{106527E8-DDFF-4D35-945C-FE24426B27CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{106527E8-DDFF-4D35-945C-FE24426B27CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{106527E8-DDFF-4D35-945C-FE24426B27CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{106527E8-DDFF-4D35-945C-FE24426B27CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{080ACFFC-58FA-4A84-ABBF-BEE1FFCE452C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{080ACFFC-58FA-4A84-ABBF-BEE1FFCE452C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{080ACFFC-58FA-4A84-ABBF-BEE1FFCE452C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{080ACFFC-58FA-4A84-ABBF-BEE1FFCE452C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{869B6AC3-499B-4982-8C7A-8AD56A01FF6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{869B6AC3-499B-4982-8C7A-8AD56A01FF6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{869B6AC3-499B-4982-8C7A-8AD56A01FF6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{869B6AC3-499B-4982-8C7A-8AD56A01FF6E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7769D0AB-C1C3-49F1-B0B7-139FB7856B3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7769D0AB-C1C3-49F1-B0B7-139FB7856B3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7769D0AB-C1C3-49F1-B0B7-139FB7856B3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7769D0AB-C1C3-49F1-B0B7-139FB7856B3D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{280DC267-318A-4CE3-83D1-D87AF14ECA68}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{280DC267-318A-4CE3-83D1-D87AF14ECA68}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{280DC267-318A-4CE3-83D1-D87AF14ECA68}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{280DC267-318A-4CE3-83D1-D87AF14ECA68}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF19B52A-9DD8-41AF-AA3C-9D59A7092941}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF19B52A-9DD8-41AF-AA3C-9D59A7092941}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF19B52A-9DD8-41AF-AA3C-9D59A7092941}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF19B52A-9DD8-41AF-AA3C-9D59A7092941}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 7
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://if-068net.visualstudio.com/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = ASPNETAPP\\ASPNETAPP.csproj
+		SccProjectName1 = ASPNETAPP
+		SccLocalPath1 = ASPNETAPP
+		SccProjectUniqueName2 = CommonLib\\CommonLib.csproj
+		SccProjectName2 = CommonLib
+		SccLocalPath2 = CommonLib
+		SccProjectUniqueName3 = DALLib.Tests\\DALLib.Tests.csproj
+		SccProjectName3 = DALLib.Tests
+		SccLocalPath3 = DALLib.Tests
+		SccProjectUniqueName4 = DALLib\\DALLib.csproj
+		SccProjectName4 = DALLib
+		SccLocalPath4 = DALLib
+		SccProjectUniqueName5 = SQLInfoHarvesterService\\SQLInfoCollectionService.csproj
+		SccProjectName5 = SQLInfoHarvesterService
+		SccLocalPath5 = SQLInfoHarvesterService
+		SccProjectUniqueName6 = ConsoleForTesting\\ConsoleForTesting.csproj
+		SccProjectName6 = ConsoleForTesting
+		SccLocalPath6 = ConsoleForTesting
+	EndGlobalSection
+EndGlobal

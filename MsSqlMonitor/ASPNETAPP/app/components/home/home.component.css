@@ -1,0 +1,30 @@
+﻿#home {
+    background-image:url('./app/assets/images/background.jpg');
+    background-size: cover;
+    padding-top: 130px;
+    padding-bottom: 50px;
+    min-height: 900px;
+}
+
+#home h2 span
+	{
+		color: #28a7e9;
+		font-weight: bold;
+	}
+#home .btn
+	{
+		background: transparent;
+		border-radius: 2px;
+		color: black;
+		font-size: 16px;
+		font-weight: bold;
+		margin-top: 20px;
+		width: 180px;
+		height: 60px;
+		padding-top: 18px;
+	}
+#home .btn:hover
+	{
+		background: #28a7e9;
+		border-color: transparent;
+	}

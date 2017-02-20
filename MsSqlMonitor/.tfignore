@@ -1,0 +1,5 @@
+\packages
+\zMyConsole
+\ASPNETAPP\node_modules
+\MsSqlModelling
+!packages/*.targets

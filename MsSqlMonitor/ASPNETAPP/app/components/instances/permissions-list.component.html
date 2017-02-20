@@ -1,0 +1,19 @@
+﻿<div *ngIf="permissions">
+    <div *ngFor="let permission of permissions" class="list-group-item">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-8">{{permission.name}}</div>
+                <div class="col-sm-4">
+                    <div class="container-fluid text-white {{permission.state.toLowerCase() == 'grant' ? 'bg-success' : 'bg-danger'}}">
+                        {{permission.state.toUpperCase()}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="(!permissions || permissions.length == 0) && emptyListMessage != null && emptyListMessage.length > 0">
+    <div class="list-group-item list-group-item-info">
+        <h6>{{emptyListMessage}}</h6>
+    </div>
+</div>

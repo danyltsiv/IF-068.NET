@@ -1,0 +1,8 @@
+﻿.list-group-item{
+    height:30px;
+    padding: 4px;
+}
+
+.list-group{
+    border-radius:0;
+}

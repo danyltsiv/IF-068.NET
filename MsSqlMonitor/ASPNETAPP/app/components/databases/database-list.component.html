@@ -1,0 +1,29 @@
+﻿<div class="row">
+    <div class="table-responsive col-md-10 col-md-offset-1"
+         *ngIf="databaseList && databaseList.length"
+         style="margin-top:60px">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Size</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor='let database of databaseList'>
+                    <td>{{database.id}}</td>
+                    <td>{{database.name}}</td>
+                    <td>{{database.size}}</td>
+                    <th>
+                        <div class="btn-group btn-group-sm">
+                            <a class="btn btn-group ">
+                                <span (click)="gotoDetail(database)" class="glyphicon glyphicon-zoom-in" aria-hidden="true" title="Details"></span>
+                            </a>
+                        </div>
+                    </th>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

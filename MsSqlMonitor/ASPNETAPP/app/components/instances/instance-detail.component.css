@@ -1,0 +1,45 @@
+﻿li.active a.ng-binding {
+    color: #000 !important;
+	background-color: #8CBEB2 !important;
+	text-decoration: none;
+}
+
+li a.ng-binding {
+    color: #777777;
+	background-color: #F2EBBF;
+	text-decoration: none;
+}
+
+.tab-container {
+	border-style: solid;
+	border-color: #dcdcdc;
+	border-width: 0px 1px 1px 1px;
+	background-color: #8CBEB2;
+	padding: 15px;
+}
+
+.xtraSpace {
+  margin: 20px 20px;
+}
+
+.btn
+{
+	background: transparent;
+	color: black;
+	font-weight: bold;
+	border-color: transparent;
+}
+
+.btn:hover
+{
+	background: #28a7e9;
+	border-color: transparent;
+}
+
+.ng-valid[required], .ng-valid.required  {
+  border-left: 5px solid #42A948;
+}
+
+.ng-invalid:not(form)  {
+  border-left: 5px solid #d9534f;
+}

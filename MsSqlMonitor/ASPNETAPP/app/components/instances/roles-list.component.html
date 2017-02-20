@@ -1,0 +1,18 @@
+﻿<div class="container-fluid" *ngIf="roles">
+    <div class="row">
+        <div class="col-sm-5">
+            <div class="list-group" style="border-radius:0px">
+                <a *ngFor="let role of roles" class="list-group-item list-group-item-action {{selectedRole == role ? 'list-group-item-info' : ''}}" style="cursor:pointer;"
+                   (click)="onSelectRole(role)">
+                    {{ role.name }}
+                </a>
+            </div>
+        </div>
+        <div class="col-sm-7">
+            <div *ngIf="selectedRole == null" class="alert alert-info">
+                <h4>Select a <strong>Role</strong> to see its permissions</h4>
+            </div>
+            <permissions-list *ngIf="selectedRole" [permissions]="selectedRole.permissions" [emptyListMessage]="'There are no permissions assigned to the role'"></permissions-list>
+        </div>
+    </div>
+</div>

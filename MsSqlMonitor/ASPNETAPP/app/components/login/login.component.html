@@ -1,0 +1,31 @@
+﻿<head>
+    <link href='https://fonts.googleapis.com/css?family=Raleway:300,200' rel='stylesheet' type='text/css'>
+</head>
+
+<body>
+    <div>
+        <div class="mismatchMsg"  *ngIf="loginError"> <h1><strong>Username or Password mismatch</strong></h1></div>
+    </div>
+
+    <div class="col-md-offset-5 col-md-2">
+        <form id="login" [formGroup]="loginForm" (submit)="performLogin($event)">
+            <div class="form">
+                <div class="forceColor"></div>
+                <div class="topbar">
+
+                    <div class="spanColor"></div>
+                    <!-- text pattern require between 4 and 20 characters. Without special characters like /, ], {, and so on -->
+                    <input formControlName="username" type="text" class="input" id="login"
+                           placeholder="User name" required autofocus pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{4,20}$"
+                           title="Имя пользователя должно содержать 5-20 латинских символов." />
+
+                    <!-- password pattern requires at least 8 characters. 1 uppercase letter, 1 lowercase and 1 number or special character -->
+                    <input formControlName="password" type="password" class="input" id="password"
+                           placeholder="Password" required pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$"
+                           title="Пароль должнен содержать больше 8 символов, символ в верхнем и нижнем регистре, и один специальный символ." />
+                </div>
+                <button class="submit" type="submit">Login</button>
+            </div>
+        </form>
+    </div>
+</body>

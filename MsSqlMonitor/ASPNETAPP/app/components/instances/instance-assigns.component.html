@@ -1,0 +1,42 @@
+﻿<div class="container-fluid" *ngIf="instance" style="">
+    <table style="height:25em;">
+        <tr>
+            <td width="50%" style="vertical-align:top;">
+                <h4 style="text-align:center;">Assigned users</h4>
+                <div *ngIf="instance.assignedUsers.length == 0" class="alert alert-info" style="text-align:center;">
+                    <h5>There are no assigned users</h5>
+                </div>
+                <div class="list-group" style="overflow-y:auto;height:25em;vertical-align:top;">
+                    <div *ngFor="let user of instance.assignedUsers" class="list-group-item list-group-item-action {{selectedAssignedUser == user ? 'active' : ''}}"
+                         style="cursor:pointer;" (click)="selectAssignedUser(user)">
+                        {{user.username}}
+                    </div>
+                </div>
+            </td>
+            <td style="vertical-align:top;">
+                <div class="btn-group-vertical" style="margin:2em 0.8em 4em 0.8em;">
+                    <button type="button" class="btn btn-secondary" (click)="grantAccess()" [disabled]="selectedNotAssignedUser == null">
+                        <span class="glyphicon glyphicon-chevron-left"></span>
+                        <span class="glyphicon glyphicon-eye-open"></span>
+                    </button>
+                    <button type="button" class="btn btn-secondary" (click)="revokeAccess()" [disabled]="selectedAssignedUser == null">
+                        <span class="glyphicon glyphicon-chevron-right"></span>
+                        <span class="glyphicon glyphicon-eye-close"></span>
+                    </button>
+                </div>
+            </td>
+            <td width="50%" style="vertical-align:top;">
+                <h4 style="text-align:center;">Not assigned users</h4>
+                <div *ngIf="instance.notAssignedUsers.length == 0" class="alert alert-info" style="text-align:center;">
+                    <h5>There are no not assigned users</h5>
+                </div>
+                <div class="list-group" style="overflow-y:auto;height:25em;vertical-align:top;">
+                    <div *ngFor="let user of instance.notAssignedUsers" class="list-group-item list-group-item-action {{selectedNotAssignedUser == user ? 'active' : ''}}"
+                         style="cursor:pointer;" (click)="selectNotAssignedUser(user)">
+                        {{user.username}}
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>

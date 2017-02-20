@@ -1,0 +1,49 @@
+﻿<div class="row">
+    <div class="table-responsive col-md-10 col-md-offset-1" 
+         *ngIf="usersList && usersList.length"
+         style="margin-top:60px">
+    
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Role</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor='let curuser of usersList'>
+                    <td>{{curuser.id}}</td>
+                    <td>{{curuser.username}}</td>
+                    <td>{{curuser.role}}</td>               
+                    <th>
+                        <div class="btn-group btn-group-sm">
+                            <a class="btn btn-group ">
+                                <span (click)="gotoDetail(curuser)" class="glyphicon glyphicon-zoom-in" aria-hidden="true" title="Details"></span>
+                            </a>
+    
+                            <a class="btn btn-group">
+                                <span (click)="deleteUser(curuser)" class="glyphicon glyphicon-remove" aria-hidden="true" title="Remove"></span>
+                            </a>
+                        </div>
+                    </th>
+    
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-offset-5 col-md-2">
+        <div class="btn-group-justified">
+            <div class="btn-group" role="group">
+                <button type="button" class="btn btn-primary"
+                        (click)="gotoAddView()">
+                    Add User
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

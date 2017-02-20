@@ -1,0 +1,51 @@
+﻿#centerText{
+    text-align: center;
+}
+
+.ng-valid[required], .ng-valid.required  {
+  border-left: 5px solid #42A948;
+}
+
+.ng-invalid:not(form)  {
+  border-left: 5px solid #d9534f;
+}
+
+.modal-dialog{
+    overflow-y: initial !important
+}
+
+.modal-body{
+    height: 520px;
+    overflow-y: auto;
+}
+
+.btn
+{
+	background: transparent;
+	color: black;
+	font-weight: bold;
+	border-color: transparent;
+}
+
+.btn:hover
+{
+	background: #28a7e9;
+	border-color: transparent;
+}
+
+.OkModal .modal-dialog{
+    max-height: 180px;
+    overflow: auto;
+}
+
+
+
+.OkModal .modal-content{
+    max-height: 180px;
+    overflow: auto;
+}
+
+.OkModal{
+    max-height: 180px;
+    overflow: auto;
+}

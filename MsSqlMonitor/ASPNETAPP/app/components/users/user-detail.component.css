@@ -1,0 +1,13 @@
+﻿.btn
+{
+	background: transparent;
+	color: black;
+	font-weight: bold;
+	border-color: transparent;
+}
+
+.btn:hover
+{
+	background: #28a7e9;
+	border-color: transparent;
+}

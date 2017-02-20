@@ -1,0 +1,488 @@
+﻿<div style="padding-top: 45px; text-align:center;">
+    <error-view></error-view>
+</div>
+
+<div class="container-fluid">
+    <br/>
+    <div class="row" *ngIf="!authService.isGuest()">
+            <div class="col-md-10 col-md-offset-1">
+                <div class="btn-group-justified">
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-primary"
+                                (click)="openAddInstanceModal(addInstanceModal)">
+                            Add Instance
+                        </button>
+                    </div>
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-primary"
+                                (click)="gotoInstances()">
+                            Instances
+                        </button>
+                    </div>
+                    <div  *ngIf="!authService.isAdmin()"
+                          class="btn-group" role="group">
+                        <button type="button" class="btn btn-primary"
+                                (click)="gotoUserHidenInstances()">
+                            Hidden instances
+                        </button>
+                    </div>
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-primary"
+                                (click)="showAssignedDeletedInstances()">
+                            Recycle bin
+                        </button>
+                    </div>
+                </div>
+        </div>
+    </div>
+    <br/>
+    <!--Pages-->
+    <div class="row" *ngIf="pages && pages.length>1">
+        <table style="margin:0 auto;">
+            <thead>
+                <tr>
+                    <th *ngFor="let i of pages">
+                        <button type="button" class="{{ i == page+1 ? 'btn btn-secondary' : 'btn btn-outline-info' }}"
+                                (click)="getInstancesPageByMode(i-1)">
+                            {{i}}
+                        </button>
+                    </th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+
+    <!--Filters and Instance List-->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-1 col-md-offset-1">
+                <div class="row">
+                    <label for="search-box0" class="col-form-label">Filter names:</label>
+                </div>
+                <div class="row">
+                    <input class="form-control" type="text" #searchBox0 id="search-box0" (keyup.enter)="filterInstancesNames(searchBox0.value,$event)">
+                </div>
+                <div class="row">
+
+                </div>
+                <div class="row">
+                    <label for="search-box1" class="col-form-label">Servers:</label>
+                </div>
+                <div class="row">
+                    <input class="form-control" type="text" #searchBox1 id="search-box1" (keyup.enter)="filterInstancesServers(searchBox1.value,$event)">
+                </div>
+                <div class="row">
+
+                </div>
+                <div class="row">
+                    <label for="search-box2" class="col-form-label">Version:</label>
+                </div>
+                <div class="row">
+                    <input class="form-control" type="text" #searchBox2 id="search-box2" (keyup.enter)="filterInstancesVersions(searchBox2.value,$event)">
+                </div>
+
+                <div class="row">
+                    <label class="col-form-label">Major Versions:</label>
+                </div>
+
+                <div class="row" *ngFor="let item  of sqlVersions; let k = index;">
+
+                    <div *ngIf="item.isvisible" class="checkbox">
+                        <label><input type="checkbox" value="true" checked="checked" (change)="onVersionChange($event,k)">{{item.version}}</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-9" *ngIf="instances"  style="margin-left:3em">
+            <div class="table-responsive">
+                <table class="table table-striped" *ngIf="instances && instances.length">
+                    <thead>
+                        <tr>
+                            <th>Server name</th>
+                            <th>Instance name</th>
+                            <th>Version</th>
+                            <th>Databases</th>
+                            <th>Logins</th>
+                            <th>Roles</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr *ngFor='let instance of instances' class="{{instance.status.toLowerCase() == 'online' ? 'table-success' : instance.status.toLowerCase() == 'offline' ? 'table-danger' : 'disabled'}}">
+
+                            <!--Server Name-->
+                            <td class="align-middle">{{instance.serverName}}</td>
+
+                            <!--Instance Name-->
+                            <td class="align-middle">{{instance.instanceName}}</td>
+
+                            <!--Version-->
+                            <td class="align-middle">
+                                {{instance.version}}
+                            </td>
+
+                            <!--Databases-->
+                            <td class="align-middle">
+                                <div *ngIf="instance.status.toLowerCase() != 'unknown'">
+                                    <button type="button" class="btn btn-outline-info" style="border-width: 0px"
+                                            [disabled]="instance.databasesCount == 0" (click)="navigateToDatabases(instance.id)">
+                                        <img src="./app/assets/images/database.png" style="width:1.5em; height:1.5em;" />
+                                        {{instance.databasesCount}}
+                                    </button>
+                                </div>
+                            </td>
+
+                            <!--Logins-->
+                            <td class="align-middle">
+                                <div *ngIf="instance.status.toLowerCase() != 'unknown'">
+                                    <button type="button" class="btn btn-outline-info" style="border-width: 0px"
+                                            (click)="openModal(instanceLogins, instance)"
+                                            [disabled]="instance.logins.length == 0">
+                                        <img src="./app/assets/images/login.png" style="width:1.5em; height:1.5em;" />
+                                        {{instance.logins.length }}
+                                    </button>
+                                </div>
+                            </td>
+
+                            <!--Roles-->
+                            <td class="align-middle" id="centerText">
+                                <div *ngIf="instance.status.toLowerCase() != 'unknown'">
+                                    <button type="button" class="btn btn-outline-info" style="border-width: 0px"
+                                            (click)="openModal(instanceRoles, instance)"
+                                            [disabled]="instance.roles.length == 0">
+                                        <img src="./app/assets/images/role.png" style="width:1.5em; height:1.5em;" />
+                                        {{instance.roles.length }}
+                                    </button>
+                                </div>
+                            </td>
+
+                            <!--Status-->
+                            <td class="align-middle">{{instance.status}}</td>
+
+                            <!--Actions-->
+                            <td>
+                                <!--For instances-->
+                                <div class="btn-toolbar" *ngIf="viewMode == 0">
+                                    <div class="btn-group btn-group-sm"
+                                         role="group">
+                                        <button type="button" (click)="gotoDetail(instance)"
+                                                class="btn btn-secondary" [disabled]="instance.status.toLowerCase() == 'unknown'">
+                                            <span class="glyphicon glyphicon-zoom-in" aria-hidden="true" title="Details"></span>
+                                        </button>
+                                        <button class="btn btn-secondary" (click)="hideInstance(instance)" *ngIf="authService.isUser()">
+                                            <span class="glyphicon glyphicon-eye-close" aria-hidden="true" title="Hide"></span>
+                                        </button>
+                                        <button class="btn btn-secondary" (click)="refreshInstance(instance.id)">
+                                            <span class="glyphicon glyphicon-refresh" aria-hidden="true" title="Refresh"></span>
+                                        </button>
+                                        <button class="btn btn-secondary" (click)="editInstance(editInstanceModal, instance)" *ngIf="!authService.isGuest()">
+                                            <span class="glyphicon glyphicon-pencil" aria-hidden="true" title="Edit"></span>
+                                        </button>
+                                    </div>
+                                    <div class="btn-group btn-group-sm">
+                                        <button class="btn btn-secondary" (click)="deleteInstance(instance)" *ngIf="!authService.isGuest()">
+                                            <span class="glyphicon glyphicon-trash" aria-hidden="true" title="Delete"></span>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!--For hiden instances-->
+                                <div *ngIf="viewMode == 1">
+                                    <button type="button" class="btn btn-secondary"
+                                            (click)="showInstance(instance)">
+                                        Show
+                                    </button>
+                                </div>
+                                <!--For recycle bin-->
+                                <div *ngIf="viewMode == 2">
+                                    <button type="button" class="btn btn-secondary"
+                                            (click)="recoverInstance(instance)">
+                                        Recover
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        </div>
+        <!--Modal with Instance Logins-->
+        <template ngbModalContainer #instanceLogins let-c="close">
+
+        <div class="modal-header">
+            <button type="button" class="close" aria-label="Close" (click)="c('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <h4 class="modal-title">Logins</h4>
+        </div>
+
+        <div class="modal-body">
+            <logins-list [logins]="selectedInstance.logins"></logins-list>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+        </div>
+    </template>
+        <!--Modal with Instance Roles-->
+        <template ngbModalContainer #instanceRoles let-c="close">
+
+        <div class="modal-header">
+            <button type="button" class="close" aria-label="Close" (click)="c('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <h4 class="modal-title">Roles</h4>
+        </div>
+
+        <div class="modal-body">
+            <roles-list [roles]="selectedInstance.roles"></roles-list>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+        </div>
+    </template>
+        <!--Modal to Add Instance-->
+        <template ngbModalContainer #addInstanceModal let-c="close" let-d="dismiss">
+        <form #addInstanceForm="ngForm">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Add Instance</h4>
+            </div>
+
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group {{serverName.errors && (serverName.dirty || serverName.touched) ? 'has-danger' : ''}}">
+                                <label for="serverName">Server</label>
+                                <input type="text" class="form-control" #serverName="ngModel" id="serverName" placeholder="Server Name"
+                                       [(ngModel)]="newInstance.serverName" name="serverName" required maxlength="15" />
+                                <div class="form-control-feedback col-sm-12" style="text-align:left;"
+                                     *ngIf="serverName.errors && (serverName.dirty || serverName.touched)">
+                                    <label [hidden]="!serverName.errors.required">
+                                        Cannot be empty
+                                    </label>
+                                    <label [hidden]="!serverName.errors.maxlength">
+                                        Max length 15 characters
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group {{instanceName.errors && (instanceName.dirty || instanceName.touched) ? 'has-danger' : ''}}">
+                                <label for="instanceName">Instance</label>
+                                <input type="text" class="form-control" id="instanceName" placeholder="Instance Name"
+                                       [(ngModel)]="newInstance.instanceName" name="instanceName" #instanceName="ngModel"  maxlength="16" />
+                                <div class="form-control-feedback col-sm-12" style="text-align:left;"
+                                     *ngIf="instanceName.errors && (instanceName.dirty || instanceName.touched)">
+                                    <label [hidden]="!instanceName.errors.required">
+                                        Cannot be empty
+                                    </label>
+                                    <label [hidden]="!instanceName.errors.maxlength">
+                                        Max length 16 characters
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group {{userLogin.errors && (userLogin.dirty || userLogin.touched) ? 'has-danger' : ''}}">
+                                <label for="instanceName">User Login</label>
+                                <input type="text" class="form-control" id="userLogin" placeholder="Login"
+                                       [(ngModel)]="newInstance.login" name="userLogin" #userLogin="ngModel" required maxlength="128" />
+                                <div class="form-control-feedback col-sm-12" style="text-align:left;"
+                                     *ngIf="userLogin.errors && (userLogin.dirty || userLogin.touched)">
+                                    <label [hidden]="!userLogin.errors.required">
+                                        Cannot be empty
+                                    </label>
+                                    <label [hidden]="!userLogin.errors.maxlength">
+                                        Max length 128 characters
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group {{password.errors && (password.dirty || password.touched) ? 'has-danger' : ''}}">
+                                <label for="password">Password</label>
+                                <input type="password" class="form-control" id="password" placeholder="Password"
+                                       [(ngModel)]="newInstance.password" name="password" required #password="ngModel" />
+                                <div class="form-control-feedback col-sm-12" style="text-align:left;"
+                                     *ngIf="password.errors && (password.dirty || password.touched)">
+                                    <label [hidden]="!password.errors.required">
+                                        Enter Password
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group {{confirmation.errors && (confirmation.dirty || confirmation.touched) ? 'has-danger' : ''}}">
+                                <label for="passwordConfirm">Confirm Password</label>
+                                <input type="password" class="form-control" id="passwordConfirm" placeholder="Password Confirmation"
+                                       [(ngModel)]="newInstance.version" name="passwordConfirmation" required #confirmation="ngModel"
+                                       pattern="{{password.value}}" />
+                                <div class="form-control-feedback col-sm-12" style="text-align:left;"
+                                     *ngIf="confirmation.errors && (confirmation.dirty || confirmation.touched)">
+                                    <label [hidden]="!confirmation.errors.required">
+                                        Enter Confirmation
+                                    </label>
+                                    <label [hidden]="confirmation.errors.required">
+                                        Confirmation don't match
+                                    </label>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label for="isWindowsAuth">Authentication</label>
+                                <div class="btn-group" data-toggle="buttons" style="width:100%">
+                                    <label class="btn btn-secondary col-sm-6 {{newInstance.isWindowsAuthentication ? 'active' : ''}}" (click)="newInstance.isWindowsAuthentication = true">
+                                        Windows
+                                    </label>
+                                    <label class="btn btn-secondary col-sm-6 {{(newInstance.isWindowsAuthentication == false) ? 'active' : ''}}" (click)="newInstance.isWindowsAuthentication = false">
+                                        Sql
+                                    </label>
+                                </div>
+                            </div>
+                       
+                        
+                        
+                        
+                        
+                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" [disabled]="!addInstanceForm.form.valid" (click)="checkConnection(newInstance)">Check</button>
+                <button type="button" class="btn btn-primary" [disabled]="!addInstanceForm.form.valid" (click)="c('Add click')">Add</button>
+                <button type="button" class="btn btn-secondary" (click)="d('Cancel click')">Cancel</button>
+            </div>
+        </form>
+    </template>
+
+        <!--Ok Dialog-->
+        <template ngbModalContainer #okModal let-c="close" let-d="dismiss">
+
+            <!-- <form #okForm="ngForm">-->
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">{{message}}</h4>
+            </div>
+
+
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="d('Cancel click')">Ok</button>
+            </div>
+            <!-- </form>-->
+        </template>
+
+
+    <!--Modal to Edit Instance-->
+    <template ngbModalContainer #editInstanceModal let-c="close" let-d="dismiss">
+
+        <form #editInstanceForm="ngForm">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Edit Instance</h4>
+            </div>
+
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group {{serverName.errors && (serverName.dirty || serverName.touched) ? 'has-danger' : ''}}">
+                                <label for="serverName">Server</label>
+                                <input type="text" class="form-control" #serverName="ngModel" id="serverName" placeholder="Server Name"
+                                       [(ngModel)]="instToUpdate.serverName" name="serverName" required maxlength="15" />
+                                <div class="form-control-feedback col-sm-12" style="text-align:left;"
+                                     *ngIf="serverName.errors && (serverName.dirty || serverName.touched)">
+                                    <label [hidden]="!serverName.errors.required">
+                                        Cannot be empty
+                                    </label>
+                                    <label [hidden]="!serverName.errors.maxlength">
+                                        Max length 15 characters
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group {{instanceName.errors && (instanceName.dirty || instanceName.touched) ? 'has-danger' : ''}}">
+                                <label for="instanceName">Instance</label>
+                                <input type="text" class="form-control" id="instanceName" placeholder="Instance Name"
+                                       [(ngModel)]="instToUpdate.instanceName" name="instanceName" #instanceName="ngModel" required maxlength="16" />
+                                <div class="form-control-feedback col-sm-12" style="text-align:left;"
+                                     *ngIf="instanceName.errors && (instanceName.dirty || instanceName.touched)">
+                                    <label [hidden]="!instanceName.errors.required">
+                                        Cannot be empty
+                                    </label>
+                                    <label [hidden]="!instanceName.errors.maxlength">
+                                        Max length 16 characters
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group {{userLogin.errors && (userLogin.dirty || userLogin.touched) ? 'has-danger' : ''}}">
+                                <label for="instanceName">User Login</label>
+                                <input type="text" class="form-control" id="userLogin" placeholder="New Login"
+                                       [(ngModel)]="instToUpdate.login" name="userLogin" #userLogin="ngModel" required maxlength="128" />
+                                <div class="form-control-feedback col-sm-12" style="text-align:left;"
+                                     *ngIf="userLogin.errors && (userLogin.dirty || userLogin.touched)">
+                                    <label [hidden]="!userLogin.errors.required">
+                                        Cannot be empty
+                                    </label>
+                                    <label [hidden]="!userLogin.errors.maxlength">
+                                        Max length 128 characters
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group {{password.errors && (password.dirty || password.touched) ? 'has-danger' : ''}}">
+                                <label for="password">Password</label>
+                                <input type="password" class="form-control" id="password" placeholder="New Password"
+                                       [(ngModel)]="instToUpdate.password" name="password" required #password="ngModel" />
+                                <div class="form-control-feedback col-sm-12" style="text-align:left;"
+                                     *ngIf="password.errors && (password.dirty || password.touched)">
+                                    <label [hidden]="!password.errors.required">
+                                        Enter Password
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group {{confirmation.errors && (confirmation.dirty || confirmation.touched) ? 'has-danger' : ''}}">
+                                <label for="passwordConfirm">Confirm Password</label>
+                                <input type="password" class="form-control" id="passwordConfirm" placeholder="Password Confirmation"
+                                       [(ngModel)]="instToUpdate.version" name="passwordConfirmation" required #confirmation="ngModel"
+                                       pattern="{{password.value}}" />
+                                <div class="form-control-feedback col-sm-12" style="text-align:left;"
+                                     *ngIf="confirmation.errors && (confirmation.dirty || confirmation.touched)">
+                                    <label [hidden]="!confirmation.errors.required">
+                                        Enter Confirmation
+                                    </label>
+                                    <label [hidden]="confirmation.errors.required">
+                                        Confirmation don't match
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="isWindowsAuth">Authentication</label>
+                                <div class="btn-group" data-toggle="buttons" style="width:100%">
+                                    <label class="btn btn-secondary col-sm-6 {{instToUpdate.isWindowsAuthentication ? 'active' : ''}}" (click)="instToUpdate.isWindowsAuthentication = true">
+                                        Windows
+                                    </label>
+                                    <label class="btn btn-secondary col-sm-6 {{(instToUpdate.isWindowsAuthentication == false) ? 'active' : ''}}" (click)="instToUpdate.isWindowsAuthentication = false">
+                                        Sql
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-primary" [disabled]="!editInstanceForm.form.valid" (click)="c('Save click')">Save</button>
+                <button type="button" class="btn btn-secondary" (click)="d('Cancel click')">Cancel</button>
+            </div>
+        </form>
+    </template>
+    </div>
+</div>

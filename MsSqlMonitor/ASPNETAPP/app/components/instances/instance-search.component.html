@@ -1,0 +1,8 @@
+﻿
+    <input #searchBox class="form-control" id="search-box" (keyup)="search(searchBox.value)" [(ngModel)]="selected" />
+    <div *ngIf="instancesCount > 0" class="drMenu">
+        <div *ngFor="let inst of instances | async"
+             class="drItem" (click)="selectInst(inst);">
+            {{inst.serverName}}
+        </div>
+    </div>

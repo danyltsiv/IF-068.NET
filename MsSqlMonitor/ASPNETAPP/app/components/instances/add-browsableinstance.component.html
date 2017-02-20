@@ -1,0 +1,193 @@
+﻿<div style="padding-top: 45px; text-align:center;">
+    <error-view></error-view>
+</div>
+
+<div class="row">
+    <div class="col-md-offset-1 col-md-10"
+         style="padding-top: 45px"
+         *ngIf="!instances">
+        <h1>Searching instances in local network...</h1>
+    </div>
+</div>
+
+<div class="container-fluid"
+     style="padding-top: 45px">
+    <div class="row">
+        <div class="col-md-offset-1 col-md-10" *ngIf="instances">
+            <div class="table-responsive">
+                <table class="table table-striped" *ngIf="instances && instances.length">
+                    <thead>
+                        <tr>
+                            <th>Server name</th>
+                            <th>Instance name</th>
+                            <th>Version</th>
+                            <th>Add to database</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr *ngFor='let instance of instances'>
+
+                            <!--Server Name-->
+                            <td class="align-middle">{{instance.serverName}}</td>
+
+                            <!--Instance Name-->
+                            <td class="align-middle">{{instance.instanceName}}</td>
+
+                            <!--Version-->
+                            <td class="align-middle">
+                                {{instance.version}}
+                            </td>
+
+                            <!--Actions-->
+                            <td>
+                                <div class="btn-toolbar">
+                                    <div class="btn-group btn-group-sm"
+                                         role="group">
+                                        <button type="button" (click)="openAddInstanceModal(addInstanceModal,instance.serverName,instance.instanceName)"
+                                                class="btn btn-secondary">
+                                            <span class="glyphicon glyphicon-plus-sign" aria-hidden="true" title="Details"></span>
+                                        </button>
+
+                                    </div>
+
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Modal to Add Instance-->
+<template ngbModalContainer #addInstanceModal let-c="close" let-d="dismiss">
+    <form #addInstanceForm="ngForm">
+        <div class="modal-header">
+            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <h4 class="modal-title">Add Instance</h4>
+        </div>
+
+        <div class="modal-body">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group {{serverName.errors && (serverName.dirty || serverName.touched) ? 'has-danger' : ''}}">
+                            <label for="serverName">Server</label>
+                            <input type="text" class="form-control" #serverName="ngModel" id="serverName" placeholder="Server Name"
+                                   [(ngModel)]="newInstance.serverName" name="serverName" required maxlength="15" />
+                            <div class="form-control-feedback col-sm-12" style="text-align:left;"
+                                 *ngIf="serverName.errors && (serverName.dirty || serverName.touched)">
+                                <label [hidden]="!serverName.errors.required">
+                                    Cannot be empty
+                                </label>
+                                <label [hidden]="!serverName.errors.maxlength">
+                                    Max length 15 characters
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="instanceName">Instance</label>
+                            <input type="text" class="form-control" id="instanceName" placeholder="Instance Name"
+                                   [(ngModel)]="newInstance.instanceName" name="instanceName" #instanceName="ngModel"  maxlength="16" />
+                            <div class="form-control-feedback col-sm-12" style="text-align:left;"
+                                 *ngIf="instanceName.errors && (instanceName.dirty || instanceName.touched)">
+                      
+                                <label [hidden]="!instanceName.errors.maxlength">
+                                    Max length 16 characters
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group {{userLogin.errors && (userLogin.dirty || userLogin.touched) ? 'has-danger' : ''}}">
+                            <label for="instanceName">User Login</label>
+                            <input type="text" class="form-control" id="userLogin" placeholder="Login"
+                                   [(ngModel)]="newInstance.login" name="userLogin" #userLogin="ngModel" required maxlength="128" />
+                            <div class="form-control-feedback col-sm-12" style="text-align:left;"
+                                 *ngIf="userLogin.errors && (userLogin.dirty || userLogin.touched)">
+                                <label [hidden]="!userLogin.errors.required">
+                                    Cannot be empty
+                                </label>
+                                <label [hidden]="!userLogin.errors.maxlength">
+                                    Max length 128 characters
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group {{password.errors && (password.dirty || password.touched) ? 'has-danger' : ''}}">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" id="password" placeholder="Password"
+                                   [(ngModel)]="newInstance.password" name="password" required #password="ngModel" />
+                            <div class="form-control-feedback col-sm-12" style="text-align:left;"
+                                 *ngIf="password.errors && (password.dirty || password.touched)">
+                                <label [hidden]="!password.errors.required">
+                                    Enter Password
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group {{confirmation.errors && (confirmation.dirty || confirmation.touched) ? 'has-danger' : ''}}">
+                            <label for="passwordConfirm">Confirm Password</label>
+                            <input type="password" class="form-control" id="passwordConfirm" placeholder="Password Confirmation"
+                                   [(ngModel)]="newInstance.version" name="passwordConfirmation" required #confirmation="ngModel"
+                                   pattern="{{password.value}}" />
+                            <div class="form-control-feedback col-sm-12" style="text-align:left;"
+                                 *ngIf="confirmation.errors && (confirmation.dirty || confirmation.touched)">
+                                <label [hidden]="!confirmation.errors.required">
+                                    Enter Confirmation
+                                </label>
+                                <label [hidden]="confirmation.errors.required">
+                                    Confirmation don't match
+                                </label>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="isWindowsAuth">Authentication</label>
+                            <div class="btn-group" data-toggle="buttons" style="width:100%">
+                                <label class="btn btn-secondary col-sm-6 {{newInstance.isWindowsAuthentication ? 'active' : ''}}" (click)="newInstance.isWindowsAuthentication = true">
+                                    Windows
+                                </label>
+                                <label class="btn btn-secondary col-sm-6 {{(newInstance.isWindowsAuthentication == false) ? 'active' : ''}}" (click)="newInstance.isWindowsAuthentication = false">
+                                    Sql
+                                </label>
+                            </div>
+                        </div>
+
+
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" [disabled]="!addInstanceForm.form.valid" (click)="checkConnection(newInstance)">Check</button>
+            <button type="button" class="btn btn-primary" [disabled]="!addInstanceForm.form.valid" (click)="c('Add click')">Add</button>
+            <button type="button" class="btn btn-secondary" (click)="d('Cancel click')">Cancel</button>
+        </div>
+    </form>
+</template>
+
+<!--Ok Dialog-->
+<template ngbModalContainer #okModal let-c="close" let-d="dismiss">
+
+   <!-- <form #okForm="ngForm">-->
+        <div class="modal-header">
+            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <h4 class="modal-title">{{message}}</h4>
+        </div>
+
+   
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="d('Cancel click')">Ok</button>
+        </div>
+   <!-- </form>-->
+</template>
+

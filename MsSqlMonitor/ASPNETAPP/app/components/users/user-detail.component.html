@@ -1,0 +1,232 @@
+﻿<div class="container-fluid"
+     style="padding-top: 60px"
+     *ngIf="user">
+    <div class="text-center" [style.visibility]="visibility">
+        <h3 class="alert-danger">
+            {{errorMsg}}
+        </h3>
+    </div>
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="row">
+                <div class="col-md-4" style="text-align:center">
+                    <img src="../../../app/assets/images/edit-user.png"
+                         style="width:150px; height:150px" />
+                    <h4>Editing user: {{user.username}}</h4>
+                </div>
+                <div class="col-md-8">
+                    <form id="update-instance" (ngSubmit)="updateUser()" #f="ngForm">
+                        <div class="form-group row">
+                            <label for="password"
+                                   class="col-md-4 col-md-offset-1 col-form-label">
+                                Set new password:
+                            </label>
+                            <div class="col-md-5">
+                                <input class="form-control"
+                                       type="password"
+                                       [(ngModel)]="password"
+                                       name="password"
+                                       placeholder="Password"
+                                       required pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$"
+                                       title="Пароль должнен содержать больше 8 символов, символ в верхнем и нижнем регистре, и один специальный символ." />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="confirmPassword"
+                                   class="col-md-4 col-md-offset-1 col-form-label">
+                                Confirm new password:
+                            </label>
+                            <div class="col-md-5 ">
+                                <input class="form-control"
+                                       type="password"
+                                       [(ngModel)]="confirmPassword"
+                                       name="confirmPassword"
+                                       placeholder="Password"
+                                       required pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$"
+                                       title="Пароль должнен содержать больше 8 символов, символ в верхнем и нижнем регистре, и один специальный символ." />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="role" class="col-md-4 col-md-offset-1 col-form-label">
+                                Set new role:
+                            </label>
+                            <div class="col-md-5 ">
+                                <select [(ngModel)]="role" name="role" class="form-control">
+                                    <option value="Admin">Admin</option>
+                                    <option value="User">User</option>
+                                    <option value="Guest">Guest</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2 col-md-offset-5">
+                                <div class="form-group row" style="margin-top: 20px">
+                                    <div class="btn-group-justified">
+                                        <div class="btn-group" role="group">
+                                            <button class="btn btn-primary" type="submit">
+                                                Save
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <!--Pages-->
+    <div class="row" *ngIf="pages && pages.length>1">
+        <table style="margin:0 auto;">
+            <thead>
+                <tr *ngIf="viewMode == 0">
+                    <th *ngFor="let i of pages">
+                        <button type="button" class="{{ i == page+1 ? 'btn btn-secondary' : 'btn btn-outline-info' }}"
+                                (click)="getInstancesPage(i-1)">
+                            {{i}}
+                        </button>
+                    </th>
+                </tr>
+                <tr *ngIf="viewMode == 1">
+                    <th *ngFor="let i of pages">
+                        <button type="button" class="{{ i == page+1 ? 'btn btn-secondary' : 'btn btn-outline-info' }}"
+                                (click)="getNotAssignedInstancesPage(i-1)">
+                            {{i}}
+                        </button>
+                    </th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <!--ADD-->
+    <div class="container-fluid">
+        <div class="row">
+            <!--ADD-->
+            <!--Filters-->
+            <div class="col-md-offset-1 col-md-1">
+                <div class="row">
+                    <label for="search-box0" class="col-form-label">Filter names:</label>
+                </div>
+                <div class="row">
+                    <input class="form-control" type="text" #searchBox0 id="search-box0" (keyup.enter)="filterInstancesNames(searchBox0.value,$event)">
+                </div>
+                <div class="row">
+
+                </div>
+                <div class="row">
+                    <label for="search-box1" class="col-form-label">Servers:</label>
+                </div>
+                <div class="row">
+                    <input class="form-control" type="text" #searchBox1 id="search-box1" (keyup.enter)="filterInstancesServers(searchBox1.value,$event)">
+                </div>
+                <div class="row">
+
+                </div>
+                <div class="row">
+                    <label for="search-box2" class="col-form-label">Version:</label>
+                </div>
+                <div class="row">
+                    <input class="form-control" type="text" #searchBox2 id="search-box2" (keyup.enter)="filterInstancesVersions(searchBox2.value,$event)">
+                </div>
+
+                <div class="row">
+                    <label class="col-form-label">Major Versions:</label>
+                </div>
+
+                <div class="row" *ngFor="let item  of sqlVersions; let k = index;">
+
+                    <div *ngIf="item.isvisible" class="checkbox">
+                        <label><input type="checkbox" value="true" checked="checked" (change)="onVersionChange($event,k)">{{item.version}}</label>
+                    </div>
+                </div>
+            </div>
+            <!--Table-->
+            <div class="col-md-9" style="margin-left:3em">
+                <div class="table-responsive">
+                    <table class="table table-striped" *ngIf="viewMode == 0 && userInstances && userInstances.length ">
+                        <thead>
+                            <tr>
+                                <th>Instance name</th>
+                                <th>Server name</th>
+                                <th>Version</th>
+                                <th>Number of dbs</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor='let instance of userInstances'>
+                                <td>{{instance.instanceName}}</td>
+                                <td>{{instance.serverName}}</td>
+                                <td>{{instance.version}}</td>
+                                <td id="centerText">{{instance.databasesCount }}</td>
+                                <td>{{instance.status}}</td>
+                                <th>
+                                    <div class="btn-group btn-group-sm">
+                                        <a class="btn btn-group ">
+                                            <span (click)="goToInstanceDetail(instance)" class="glyphicon glyphicon-zoom-in" aria-hidden="true" title="Details"></span>
+                                        </a>
+                                        <a class="btn btn-group">
+                                            <span (click)="deassignInstance(instance)" class="glyphicon glyphicon-remove" aria-hidden="true" title="Refuse"></span>
+                                        </a>
+                                    </div>
+                                </th>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-striped" *ngIf="viewMode == 1 && notAssignedInstances && notAssignedInstances.length ">
+                        <thead>
+                            <tr>
+                                <th>Instance name</th>
+                                <th>Server name</th>
+                                <th>Version</th>
+                                <th>Number of dbs</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor='let instance of notAssignedInstances'>
+                                <td>{{instance.instanceName}}</td>
+                                <td>{{instance.serverName}}</td>
+                                <td>{{instance.version}}</td>
+                                <td id="centerText">{{instance.databasesCount }}</td>
+                                <td>{{instance.status}}</td>
+                                <th>
+                                    <div class="btn-group btn-group-sm">
+                                        <a class="btn btn-group ">
+                                            <span (click)="goToInstanceDetail(instance)" class="glyphicon glyphicon-zoom-in" aria-hidden="true" title="Details"></span>
+                                        </a>
+                                        <a class="btn btn-group">
+                                            <span (click)="assignInstance(instance)" class="glyphicon glyphicon-plus" aria-hidden="true" title="Assign"></span>
+                                        </a>
+                                    </div>
+                                </th>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2 col-md-offset-5">
+                <div class="btn-group-justified">
+                    <div class="btn-group" role="group">
+                        <button *ngIf="viewMode == 0"
+                                (click)="changeViewState()"
+                                class="btn btn-primary">
+                            Assign instance
+                        </button>
+                        <button *ngIf="viewMode == 1"
+                                (click)="changeViewState()"
+                                class="btn btn-primary">
+                            Refuse instance
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,87 @@
+﻿<div class="row">
+    <div class="table-responsive col-md-10 col-md-offset-1"
+         *ngIf="databases && databases.length"
+         style="margin-top:60px">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Size</th>
+                    <th>Create Date</th>
+                    <th>Users</th>
+                    <th>Roles</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let database of databases">
+                    <!--Server Name-->
+                    <td class="align-middle">{{database.name}}</td>
+                    <!--Instance Name-->
+                    <td class="align-middle">{{database.size}}</td>
+                    <!--Create Date-->
+                    <td class="align-middle">
+                        {{database.createDate}}
+                    </td>
+                    <!--Users-->
+                    <td class="align-middle">
+                    <div>
+                        <button type="button" class="btn btn-outline-info" style="border-width: 0px"
+                                (click)="openModal(databaseUsers, database)"
+                                [disabled]="database.users.length == 0">
+                            <img src="../../../app/assets/images/login.png" style="width:1.5em; height:1.5em;" />
+                            {{database.users.length }}
+                        </button>
+                    </div>
+                    </td>
+                    <!--Roles-->
+                    <td class="align-middle" id="centerText">
+                    <div>
+                        <button type="button" class="btn btn-outline-info" style="border-width: 0px"
+                                (click)="openModal(databaseRoles, database)"
+                                [disabled]="database.roles.length == 0">
+                            <img src="../../../app/assets/images/role.png" style="width:1.5em; height:1.5em;" />
+                            {{database.roles.length }}
+                        </button>
+                    </div>
+                </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!--Modal with Database Users-->
+<template ngbModalContainer #databaseUsers let-c="close">
+    <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="c('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">Users</h4>
+    </div>
+
+    <div class="modal-body">
+        <database-users-list [users]="selectedDatabase.users"></database-users-list>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+    </div>
+</template>
+<!--Modal with Database Roles-->
+<template ngbModalContainer #databaseRoles let-c="close">
+
+    <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="c('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">Roles</h4>
+    </div>
+
+    <div class="modal-body">
+        <roles-list [roles]="selectedDatabase.roles"></roles-list>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+    </div>
+</template>
